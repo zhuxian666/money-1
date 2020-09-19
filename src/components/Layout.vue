@@ -1,6 +1,6 @@
 <template>
-    <div class="layout-wapper" :class="{[classPrefix+'-wapper']: classPrefix}">
-        <div class="content" :class="classPrefix && `${classPrefix}-wapper`">
+    <div class="layout-wrapper" :class="{[classPrefix+'-wrapper']: classPrefix}">
+        <div class="content" :class="classPrefix && `${classPrefix}-wrapper`">
             <slot/>
         </div>
         <Nav/>
@@ -18,6 +18,14 @@
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    .layout-wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    .content {
+        overflow: auto;
+        flex-grow: 1;
+    }
 </style>

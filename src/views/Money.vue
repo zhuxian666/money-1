@@ -1,5 +1,5 @@
 <template>
-    <layout>
+    <layout class-prefix="layout">
         <Tags/>
         <FormItem/>
         <Tabs/>
@@ -24,5 +24,12 @@
 </script>
 
 <style lang="scss" scoped>
-
+    ::v-deep .layout-content {
+        display: flex;
+        flex-direction: column;
+        align-content: flex-end;
+    }
+    .notes {
+        padding: 12px 0;
+    }
 </style>

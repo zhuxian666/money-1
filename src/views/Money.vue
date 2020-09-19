@@ -2,9 +2,9 @@
     <layout class-prefix="layout">
         <Tags/>
         <FormItem/>
-        <Tabs/>
+        <Tabs :value.sync="record.type" :data-source="recordTypeList"/>
         <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
-        {{record.amount}}
+        {{record.amount}}{{record.type}}
     </layout>
 </template>
 
@@ -15,6 +15,7 @@
   import FormItem from '@/components/FormItem.vue';
   import Tabs from '@/components/Tabs.vue';
   import NumberPad from '@/components/NumberPad.vue';
+  import recordTypeList from '@/constants/recordTypeList';
 
   @Component({
     components: {NumberPad, Tabs, FormItem, Tags}
@@ -29,9 +30,10 @@
     };
 
     saveRecord(){
-      // this.$store.commit('createRecord',this.record)
+      this.$store.commit('createRecord',this.record)
     }
 
+    recordTypeList = recordTypeList;
 
   }
 </script>

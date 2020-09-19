@@ -1,21 +1,21 @@
 <template>
     <div class="nav">
         <router-link class="item" active-class="selected" to="/money">
-<!--            <svg>-->
-<!--                <use xlink:href="#jiaotong"/>-->
-<!--            </svg>-->
+            <Icon name="money"/>
             记账
         </router-link>
         <router-link class="item" active-class="selected" to="/label">
+            <Icon name="label"/>
             标签
         </router-link>
         <router-link class="item" active-class="selected" to="/statistics">
+            <Icon name="statistics"/>
             统计
         </router-link>
     </div>
 </template>
 
-<script lang=ts>
+<script lang='ts'>
   import Vue from 'vue';
 
   import {Component} from 'vue-property-decorator';

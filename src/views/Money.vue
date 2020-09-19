@@ -3,7 +3,8 @@
         <Tags/>
         <FormItem/>
         <Tabs/>
-        <NumberPad/>
+        <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
+        {{record.amount}}
     </layout>
 </template>
 
@@ -19,6 +20,18 @@
     components: {NumberPad, Tabs, FormItem, Tags}
   })
   export default class Money extends Vue {
+    get recordList() {
+      return this.$store.state.recordList;
+    }
+
+    record: RecordItem = {
+      tags: [], notes: '', type: '-', amount: 0, createAt: new Date().toISOString()
+    };
+
+    saveRecord(){
+      // this.$store.commit('createRecord',this.record)
+    }
+
 
   }
 </script>
@@ -29,6 +42,7 @@
         flex-direction: column;
         align-content: flex-end;
     }
+
     .notes {
         padding: 12px 0;
     }

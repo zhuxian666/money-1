@@ -1,6 +1,6 @@
 <template>
     <div class="numberPad">
-        <div class="input">{{output}}</div>
+        <div class="output">{{output}}</div>
         <div class="buttons">
             <button @click="inputContent">1</button>
             <button @click="inputContent">2</button>
@@ -77,7 +77,7 @@
             font-family: Consolas, monospace;
             padding: 9px 16px;
             text-align: right;
-            height: 72px;
+            height: 60px;
         }
 
         .buttons {

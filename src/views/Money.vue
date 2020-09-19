@@ -1,6 +1,6 @@
 <template>
     <layout class-prefix="layout">
-        <Tags/>
+        <Tags @update:value="record.tags=$event"/>
         <div class="notes">
             <FormItem :value.sync="record.notes"
                       field-name="备注"
@@ -16,7 +16,6 @@
               :data-source="recordTypeList"/>
         <NumberPad :value.sync="record.amount"
                    @submit="saveRecord"/>
-        {{record.type}}{{record.amount}}{{record.notes}}{{record.createAt}}
     </layout>
 </template>
 
@@ -41,9 +40,16 @@
       tags: [], notes: '', type: '-', amount: 0, createAt: new Date().toISOString()
     };
 
-    saveRecord(){
-      this.$store.commit('createRecord',this.record)
-      this.record.notes=''
+    created() {
+      this.$store.commit('fetchRecords');
+    }
+
+    saveRecord() {
+      if(!this.record.tags || this.record.tags.length===0){
+        return window.alert('请至少选择一个标签');
+      }
+      this.$store.commit('createRecord', this.record);
+      this.record.notes = '';
     }
 
     recordTypeList = recordTypeList;

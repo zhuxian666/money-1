@@ -1,10 +1,22 @@
 <template>
     <layout class-prefix="layout">
         <Tags/>
-        <FormItem/>
-        <Tabs :value.sync="record.type" :data-source="recordTypeList"/>
-        <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
-        {{record.amount}}{{record.type}}
+        <div class="notes">
+            <FormItem :value.sync="record.notes"
+                      field-name="备注"
+                      placeholder="留一个备注吧"/>
+        </div>
+        <div class="date">
+            <FormItem :value.sync="record.createAt"
+                      type="date"
+                      field-name="日期"
+                      placeholder="输入日期"/>
+        </div>
+        <Tabs :value.sync="record.type"
+              :data-source="recordTypeList"/>
+        <NumberPad :value.sync="record.amount"
+                   @submit="saveRecord"/>
+        {{record.type}}{{record.amount}}{{record.notes}}{{record.createAt}}
     </layout>
 </template>
 
@@ -31,6 +43,7 @@
 
     saveRecord(){
       this.$store.commit('createRecord',this.record)
+      this.record.notes=''
     }
 
     recordTypeList = recordTypeList;

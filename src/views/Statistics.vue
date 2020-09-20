@@ -3,6 +3,9 @@
         <Tabs class-prefix="type"
               :data-source="recordTypeList"
               :value.sync="type"/>
+        <div class="chart-wrapper" ref="chartWrapper">
+            <Chart class="chart" :options="chartOptions"/>
+        </div>
         <ol v-if="groupedList.length>0">
             <li v-for="(group,index) in groupedList" :key="index">
                 <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
@@ -17,7 +20,6 @@
         </ol>
         <div v-else class="noResult">
             目前没有相关记录
-            {{recordList.length}}
         </div>
     </layout>
 </template>
@@ -28,11 +30,87 @@
   import recordTypeList from '@/constants/recordTypeList';
   import clone from '@/lib/clone';
   import dayjs from 'dayjs';
+  import _ from 'lodash';
 
   @Component
   export default class Statistics extends Vue {
     tagString(tags: Tag[]) {
       return tags.length === 0 ? '无' : tags.map(t => t.name).join(', ');
+    }
+
+    mounted() {
+      const div = (this.$refs.chartWrapper as HTMLDivElement);
+      div.scrollLeft = div.scrollWidth;
+    }
+
+    get keyValueList() {
+      const today = new Date();
+      const array = [];
+      console.log(this.groupedList);
+      for (let i = 0; i <= 29; i++) {
+        // this.recordList = [{date:7.3, value:100}, {date:7.2, value:200}]
+        const dateString = dayjs(today)
+          .subtract(i, 'day').format('YYYY-MM-DD');
+        const found = _.find(this.groupedList, {
+          title: dateString
+        });
+        array.push({
+          key: dateString, value: found ? found.total : 0
+        });
+      }
+      array.sort((a, b) => {
+        if (a.key > b.key) {
+          return 1;
+        } else if (a.key === b.key) {
+          return 0;
+        } else {
+          return -1;
+        }
+      });
+      console.log('array');
+      console.log(array);
+      return array;
+    }
+
+    get chartOptions() {
+      const keys = this.keyValueList.map(item => item.key);
+      const values = this.keyValueList.map(item => item.value);
+      console.log('values');
+      console.log(values);
+      return {
+        grid: {
+          left: 0,
+          right: 0,
+        },
+        xAxis: {
+          type: 'category',
+          data: keys,
+          axisTick: {alignWithLabel: true},
+          axisLine: {lineStyle: {color: '#666'}},
+          axisLabel: {
+            formatter: function (value: string, index: number) {
+              return value.substr(5);
+            }
+          }
+        },
+        yAxis: {
+          type: 'value',
+          show: false
+        },
+        series: [{
+          symbol: 'circle',
+          symbolSize: 12,
+          itemStyle: {borderWidth: 1, color: '#666', borderColor: '#666'},
+          // lineStyle: {width: 10},
+          data: values,
+          type: 'line'
+        }],
+        tooltip: {
+          show: true, triggerOn: 'click',
+          position: 'top',
+          formatter: '{c}'
+        }
+      };
     }
 
     get recordList() {
@@ -151,3 +229,4 @@
         }
     }
 </style>
+
